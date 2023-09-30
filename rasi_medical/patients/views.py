@@ -62,3 +62,4 @@ def patient_create(request):
         'form': form,
     }
     return render(request, 'Patient/patientCreate.html', context)
+

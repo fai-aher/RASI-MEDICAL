@@ -4,10 +4,10 @@
 <div class="content">
     <div class="">
         <div class="page-header-title">
-            <h4 class="page-title">Patients</h4>
+            <h4 class="page-title">Patient: {{patient.name}}</h4>
             <div style="text-align:right;">
                 <button type="button" class="btn btn-success waves-effect waves-light"
-                        onClick=" window.location.href='/patients/patientcreate' " style="text-align:center;">+
+                        onClick=" window.location.href='/histories/{{history.pk}}' " style="text-align:center;"> Update
                 </button>
             </div>
         </div>
@@ -25,36 +25,23 @@
                     <table class="table table-hover">
                         <thead>
                         <tr style="color:#0E2EB0">
-                            <th>Patient</th>
-                            <th>Age</th>
-                            <th>Email</th>
-                            <th>Address</th>
-                            <th>Clinic History</th>
+                            <th>State</th>
+                            <th>Observation</th>
                         </tr>
                         </thead>
                         <tbody>
 
-                        {% for patient in patient_list %}
                         <tr>
-                            <td>{{ patient.name }}</td>
-                            <td>{{ patient.age }}</td>
-                            <td>{{ patient.email }}</td>
-                            <td>{{ patient.address }}</td>
-                            <td>
-                                <button type="button" class="btn btn-primary waves-effect waves-light"
-                                onClick=" window.location.href='/patients/{{ patient.pk }}/histories'  ">
-                                    Click here
-                                </button>
-                            </td>
+                            <td>{{ history.state }}</td>
+                            <td>{{ history.observations }}</td>
                         </tr>
-                        {% endfor %}
 
                         </tbody>
                     </table>
 
                     <div style="text-align:center;">
                         <button type="button" class="btn btn-primary waves-effect waves-light"
-                                onClick=" window.location.href='/' ">
+                                onClick=" window.location.href='/patients' ">
                             Back
                         </button>
                     </div>
