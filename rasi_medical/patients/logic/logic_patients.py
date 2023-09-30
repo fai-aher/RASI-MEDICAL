@@ -24,3 +24,9 @@ def update_patient(patient_pk, new_patient):
     patient.name = new_patient['name']
     patient.save()
     return patient
+
+
+def create_patient(form):
+    measurement = form.save()
+    measurement.save()
+    return ()

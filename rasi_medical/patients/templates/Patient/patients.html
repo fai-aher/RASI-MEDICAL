@@ -7,7 +7,7 @@
             <h4 class="page-title">Patients</h4>
             <div style="text-align:right;">
                 <button type="button" class="btn btn-success waves-effect waves-light"
-                        onClick=" window.location.href='/patientcreate' " style="text-align:center;">+
+                        onClick=" window.location.href='/patients/patientcreate' " style="text-align:center;">+
                 </button>
             </div>
         </div>
@@ -26,6 +26,9 @@
                         <thead>
                         <tr style="color:#0E2EB0">
                             <th>Patient</th>
+                            <th>Age</th>
+                            <th>Email</th>
+                            <th>Address</th>
                         </tr>
                         </thead>
                         <tbody>
@@ -33,6 +36,9 @@
                         {% for patient in patient_list %}
                         <tr>
                             <td>{{ patient.name }}</td>
+                            <td>{{ patient.age }}</td>
+                            <td>{{ patient.email }}</td>
+                            <td>{{ patient.address }}</td>
                         </tr>
                         {% endfor %}
 

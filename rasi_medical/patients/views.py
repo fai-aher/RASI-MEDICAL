@@ -1,7 +1,10 @@
 import json
 from django.shortcuts import render
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
+from django.urls import reverse
 from django.core import serializers
+from django.contrib import messages
+from .forms import PatientForm
 from patients.logic import logic_patients as patients_logic
 
 from django.views.decorators.csrf import csrf_exempt
@@ -16,8 +19,7 @@ def patients_view(request):
             patient = serializers.serialize('json', [patient_dto])
             return HttpResponse(patient, content_type='application/json')
         else:
-            patients_dto = patients_logic.get_patients()
-            patients = serializers.serialize('json', patients_dto)
+            patients = patients_logic.get_patients()
             context = {
                 'patient_list': patients
             }
@@ -43,3 +45,20 @@ def patient_view(request, patient_pk):
         return HttpResponse(patient, content_type='application/json')
     
     
+
+def patient_create(request):
+    if request.method == 'POST':
+        form = PatientForm(request.POST)
+        if form.is_valid():
+            patients_logic.create_patient(form)
+            messages.add_message(request, messages.SUCCESS, 'Successfully created patient')
+            return HttpResponseRedirect(reverse('patientCreate'))
+        else:
+            print(form.errors)
+    else:
+        form = PatientForm()
+
+    context = {
+        'form': form,
+    }
+    return render(request, 'Patient/patientCreate.html', context)
