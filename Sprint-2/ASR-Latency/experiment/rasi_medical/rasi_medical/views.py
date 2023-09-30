@@ -6,3 +6,6 @@ def home(request):
 
 def index(request):
     return render(request, 'index.html')
+
+def healthCheck(request):
+    return HttpResponse('ok')
