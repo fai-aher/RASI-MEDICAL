@@ -1,4 +1,5 @@
 import json
+from django.shortcuts import render
 from django.http import HttpResponse
 from django.core import serializers
 from patients.logic import logic_patients as patients_logic
@@ -17,7 +18,10 @@ def patients_view(request):
         else:
             patients_dto = patients_logic.get_patients()
             patients = serializers.serialize('json', patients_dto)
-            return HttpResponse(patients, content_type='application/json')
+            context = {
+                'patient_list': patients
+            }
+            return render(request, 'Patient/patients.html', context)
 
     if request.method == 'POST':
         patient_dto = patients_logic.create_patient(json.loads(request.body))

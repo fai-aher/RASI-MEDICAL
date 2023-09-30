@@ -3,3 +3,6 @@ from django.http import HttpResponse
 
 def home(request):
     return HttpResponse("Bienvenido a la vista de pacientes.")
+
+def index(request):
+    return render(request, 'index.html')
