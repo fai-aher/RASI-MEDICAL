@@ -4,6 +4,7 @@ from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core import serializers
 from django.contrib import messages
+from .models import HistoryEdit
 from .forms import HistoryForm
 from patients.logic.logic_patients import get_patient_by_id
 from histories.logic.logic_histories import get_history_by_patient_id, get_history_by_id, update_history
