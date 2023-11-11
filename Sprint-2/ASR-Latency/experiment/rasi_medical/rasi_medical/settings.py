@@ -80,10 +80,10 @@ WSGI_APPLICATION = 'rasi_medical.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'rasimedical_db',
-        'USER': 'rasimedical_user',
-        'PASSWORD': 'rasimedical',
-        'HOST': '10.128.0.2',
+        'NAME': 'rasimedical-db',
+        'USER': 'rasimedical-user',
+        'PASSWORD': 'isis2503',
+        'HOST': '10.46.16.3',
         'PORT': '5432',
     }
 }
