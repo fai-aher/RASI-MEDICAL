@@ -1,5 +1,5 @@
 from django.contrib import admin
-from django.urls import path
+from django.urls import include, path
 from django.views.decorators.csrf import csrf_exempt
 from . import views
 from histories import views as histories_views
@@ -9,4 +9,6 @@ urlpatterns = [
     path('<int:patient_pk>', views.patient_view, name='view_patient'),
     path('patientcreate/', csrf_exempt(views.patient_create), name='patientCreate'),
     path('<int:patient_pk>/histories', histories_views.patientHistories_view, name='patientHistories'),
+    path(r'', include('django.contrib.auth.urls')),
+    path(r'', include('social_django.urls')),
 ]

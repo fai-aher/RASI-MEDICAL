@@ -9,6 +9,10 @@ from .forms import HistoryForm
 from patients.logic.logic_patients import get_patient_by_id
 from histories.logic.logic_histories import get_history_by_patient_id, get_history_by_id, update_history
 
+from .forms import VariableForm
+from django.contrib.auth.decorators import login_required
+from rasi_medical.auth0backend import getRole
+
 # Create your views here.
 
 def patientHistories_view(request, patient_pk):
