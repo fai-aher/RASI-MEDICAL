@@ -143,10 +143,10 @@ STATICFILES_DIRS = (
 
 LOGIN_URL = "/login/auth0" 
 LOGIN_REDIRECT_URL = "/" 
-LOGOUT_REDIRECT_URL = "https://dev-vd55vib3kj1f7z0x.us.auth0.com/v2/logout?returnTo=http%3A%2F%2F34.27.251.207:8080"
+LOGOUT_REDIRECT_URL = "https://dev-vd55vib3kj1f7z0x.us.auth0.com/v2/logout?returnTo=http%3A%2F%2F34.27.251.207:8000"
 SOCIAL_AUTH_TRAILING_SLASH = False # Remove end slash from routes 
 SOCIAL_AUTH_AUTH0_DOMAIN = 'dev-vd55vib3kj1f7z0x.us.auth0.com' 
 SOCIAL_AUTH_AUTH0_KEY = 'vMeuoYCp7uIdGib1DvWDf0OvAqKN2Pld' 
-SOCIAL_AUTH_AUTH0_SECRET = base64.urlsafe_b64encode('FqwI5ilTQCbs5yQa_ubnI2WliRFjXFiMrliuhcX5cMHUb6C8mf-RX9NEB1ojaFcP'.encode()).decode()
+SOCIAL_AUTH_AUTH0_SECRET = 'FqwI5ilTQCbs5yQa_ubnI2WliRFjXFiMrliuhcX5cMHUb6C8mf-RX9NEB1ojaFcP'
 SOCIAL_AUTH_AUTH0_SCOPE = [ 'openid', 'profile','email','role', ] 
 AUTHENTICATION_BACKENDS = { 'rasi_medical.auth0backend.Auth0', 'django.contrib.auth.backends.ModelBackend', }
