@@ -12,25 +12,29 @@ from django.contrib.auth.decorators import login_required
 from rasi_medical.auth0backend import getRole
 
 @csrf_exempt
+@login_required
 def patients_view(request):
-    if request.method == 'GET' and getRole(request) == 'medico':
-        id_patient = request.GET.get('id', None)
-        
-        if id_patient:
-            patient_dto = patients_logic.get_patient_by_id(id)
+    if request.user.is_authenticated:
+        if request.method == 'GET' and getRole(request) == 'medico':
+            id_patient = request.GET.get('id', None)
+            
+            if id_patient:
+                patient_dto = patients_logic.get_patient_by_id(id)
+                patient = serializers.serialize('json', [patient_dto])
+                return HttpResponse(patient, content_type='application/json')
+            else:
+                patients = patients_logic.get_patients()
+                context = {
+                    'patient_list': patients
+                }
+                return render(request, 'Patient/patients.html', context)
+
+        if request.method == 'POST':
+            patient_dto = patients_logic.create_patient(json.loads(request.body))
             patient = serializers.serialize('json', [patient_dto])
             return HttpResponse(patient, content_type='application/json')
-        else:
-            patients = patients_logic.get_patients()
-            context = {
-                'patient_list': patients
-            }
-            return render(request, 'Patient/patients.html', context)
-
-    if request.method == 'POST':
-        patient_dto = patients_logic.create_patient(json.loads(request.body))
-        patient = serializers.serialize('json', [patient_dto])
-        return HttpResponse(patient, content_type='application/json')
+    else:
+        return HttpResponse(status=401)
 
 
 # Get a patient by ID
