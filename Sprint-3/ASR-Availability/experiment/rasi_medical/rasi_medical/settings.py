@@ -83,7 +83,7 @@ DATABASES = {
         'NAME': 'rasimedical-db',
         'USER': 'rasimedical-user',
         'PASSWORD': 'isis2503',
-        'HOST': '10.46.16.3',
+        'HOST': '10.46.16.5',
         'PORT': '5432',
     }
 }
