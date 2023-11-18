@@ -148,4 +148,4 @@ SOCIAL_AUTH_AUTH0_DOMAIN = 'dev-vd55vib3kj1f7z0x.us.auth0.com'
 SOCIAL_AUTH_AUTH0_KEY = 'vMeuoYCp7uIdGib1DvWDf0OvAqKN2Pld' 
 SOCIAL_AUTH_AUTH0_SECRET = 'FqwI5ilTQCbs5yQa_ubnI2WliRFjXFiMrliuhcX5cMHUb6C8mf-RX9NEB1ojaFcP' 
 SOCIAL_AUTH_AUTH0_SCOPE = [ 'openid', 'profile','email','role', ] 
-AUTHENTICATION_BACKENDS = { 'monitoring.auth0backend.Auth0', 'django.contrib.auth.backends.ModelBackend', }
+AUTHENTICATION_BACKENDS = { 'rasi_medical.auth0backend.Auth0', 'django.contrib.auth.backends.ModelBackend', }
