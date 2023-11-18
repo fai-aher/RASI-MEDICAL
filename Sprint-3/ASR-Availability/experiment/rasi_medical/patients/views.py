@@ -14,7 +14,7 @@ from rasi_medical.auth0backend import getRole
 @csrf_exempt
 @login_required
 def patients_view(request):
-    if request.method == 'GET':
+    if request.method == 'GET' and getRole(request) == 'medico':
         id_patient = request.GET.get('id', None)
         
         if id_patient:
