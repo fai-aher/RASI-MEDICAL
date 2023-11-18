@@ -12,7 +12,6 @@ from django.contrib.auth.decorators import login_required
 from rasi_medical.auth0backend import getRole
 
 @csrf_exempt
-@login_required
 def patients_view(request):
     if request.method == 'GET' and getRole(request) == 'medico':
         id_patient = request.GET.get('id', None)
@@ -36,7 +35,6 @@ def patients_view(request):
 
 # Get a patient by ID
 
-@login_required
 def patient_view(request, patient_pk):
     if request.method == 'GET' and getRole(request) == 'medico':
         patient_dto = patients_logic.get_patient_by_id(patient_pk)
