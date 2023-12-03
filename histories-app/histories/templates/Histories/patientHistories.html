@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<div class="content">
+    <div class="">
+        <div class="page-header-title">
+            <h4 class="page-title">Patient: {{patient.name}}</h4>
+            <div style="text-align:right;">
+                <button type="button" class="btn btn-success waves-effect waves-light"
+                        onClick=" window.location.href='/histories/{{history.pk}}' " style="text-align:center;"> Update
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <br>
+
+    <div class="page-content-wrapper">
+        <div class="container">
+            <!-- Content page -->
+
+            <div class="panel panel-default">
+                <div class="panel-body">
+
+                    <table class="table table-hover">
+                        <thead>
+                        <tr style="color:#0E2EB0">
+                            <th>State</th>
+                            <th>Observation</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+
+                        <tr>
+                            <td>{{ history.state }}</td>
+                            <td>{{ history.observations }}</td>
+                        </tr>
+
+                        </tbody>
+                    </table>
+
+                    <div style="text-align:center;">
+                        <button type="button" class="btn btn-primary waves-effect waves-light"
+                                onClick=" window.location.href='/patients' ">
+                            Back
+                        </button>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
