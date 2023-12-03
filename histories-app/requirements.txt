@@ -1,6 +1,5 @@
 cryptography==2.8
 Django==3.0.4
-psycopg2==2.8.4
 psycopg2-binary==2.8.4
 PyJWT==1.7.1
 python-dotenv==0.10.1
