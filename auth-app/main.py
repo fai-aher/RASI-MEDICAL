@@ -22,7 +22,7 @@ class User(Base):
     created_at = Column(DateTime, default=datetime.utcnow)
 
 # Database configuration
-DATABASE_URL = "postgresql://auth_user:auth_password@34.132.100.17/auth_db"
+DATABASE_URL = "postgresql://auth_user:auth_password@10.46.16.3/auth_db"
 engine = create_engine(DATABASE_URL)
 
 # Create tables
