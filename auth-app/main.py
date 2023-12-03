@@ -5,6 +5,7 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
+from pydantic import BaseModel
 from jose import JWTError, jwt
 from typing import List
 
