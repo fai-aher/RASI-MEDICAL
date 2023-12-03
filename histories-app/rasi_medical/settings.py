@@ -82,9 +82,9 @@ WSGI_APPLICATION = 'rasi_medical.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'rasimedical-db',
-        'USER': 'rasimedical-user',
-        'PASSWORD': 'isis2503',
+        'NAME': 'histories-db',
+        'USER': 'histories_user',
+        'PASSWORD': 'histories_password',
         'HOST': '10.46.16.5',
         'PORT': '5432',
     }
