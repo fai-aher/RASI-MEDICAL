@@ -48,6 +48,11 @@ oauth2_request_form = OAuth2PasswordRequestForm
 # CryptContext for password hashing
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
+# Pydantic model for the response
+class UserResponse(BaseModel):
+    username: str
+    created_at: datetime
+
 # Dependency to get the current user
 def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
@@ -71,14 +76,11 @@ def authenticate_user(db: Session, token: str, credentials_exception):
         raise credentials_exception
     return user
 
-# Function to create a new user
-def create_user(db: Session, username: str, password: str):
-    hashed_password = pwd_context.hash(password)
-    db_user = User(username=username, hashed_password=hashed_password)
-    db.add(db_user)
-    db.commit()
-    db.refresh(db_user)
-    return db_user
+# Endpoint to create a new user
+@app.post("/users/", response_model=UserResponse)
+def create_user_endpoint(username: str, password: str, db: Session = Depends(get_db)):
+    user = create_user(db, username, password)
+    return UserResponse(username=user.username, created_at=user.created_at)
 
 # Endpoint to create a new user
 @app.post("/users/", response_model=User)
