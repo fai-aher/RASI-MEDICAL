@@ -28,6 +28,9 @@ engine = create_engine(DATABASE_URL)
 # Create tables
 Base.metadata.create_all(bind=engine)
 
+# Define SessionLocal as a function
+SessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=engine)
+
 # Dependency to get the database session
 def get_db():
     db = SessionLocal()
