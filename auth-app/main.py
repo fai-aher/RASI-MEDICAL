@@ -107,3 +107,8 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = create_jwt_token(data={"sub": form_data.username}, expires_delta=access_token_expires)
     return {"access_token": access_token, "token_type": "bearer"}
+
+# Endpoint to check health
+@app.get("/health")
+def health():
+    return {"status": "ok"}
