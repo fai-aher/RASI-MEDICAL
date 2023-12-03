@@ -2,6 +2,7 @@ from fastapi import FastAPI, Depends, HTTPException
 from sqlalchemy import create_engine, Column, String, Integer
 from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
+from pydantic import BaseModel
 
 app = FastAPI()
 
@@ -30,10 +31,14 @@ def get_db():
     finally:
         db.close()
 
+class UserCredentials(BaseModel):
+    username: str
+    password: str
+
 # Endpoint to create a new user
 @app.post("/users")
-def create_user(username: str, password: str, db: Session = Depends(get_db)):
-    user = User(username=username, password=password)
+def create_user(credentials: UserCredentials = Body(...), db: Session = Depends(get_db)):
+    user = User(username=credentials.username, password=credentials.password)
     db.add(user)
     db.commit()
     db.refresh(user)
@@ -46,8 +51,8 @@ def authenticate_user(username: str, password: str, db: Session = Depends(get_db
 
 # Endpoint to validate credentials
 @app.get("/login")
-def login(username: str, password: str, db: Session = Depends(get_db)):
-    db_user = authenticate_user(username, password, db)
+def login(credentials: UserCredentials = Body(...), db: Session = Depends(get_db)):
+    db_user = authenticate_user(credentials.username, credentials.password, db)
 
     if not db_user:
         raise HTTPException(
