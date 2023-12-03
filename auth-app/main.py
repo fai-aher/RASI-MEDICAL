@@ -5,9 +5,10 @@ from sqlalchemy.ext.declarative import declarative_base
 from sqlalchemy.orm import sessionmaker, Session
 from passlib.context import CryptContext
 from datetime import datetime, timedelta
-from pydantic import BaseModel
 from jose import JWTError, jwt
 from typing import List
+
+from pydantic import BaseModel
 
 # Define the FastAPI app
 app = FastAPI()
@@ -43,12 +44,6 @@ def get_db():
 # OAuth2PasswordBearer for authentication
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
 
-# OAuth2PasswordRequestForm for token retrieval
-oauth2_request_form = OAuth2PasswordRequestForm
-
-# CryptContext for password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
-
 # Pydantic model for the response
 class UserResponse(BaseModel):
     username: str
@@ -63,7 +58,6 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
     )
     return authenticate_user(db, token, credentials_exception)
 
-
 # Function to verify a user's credentials
 def verify_token(db: Session, token: str):
     user = db.query(User).filter(User.username == token).first()
@@ -77,16 +71,20 @@ def authenticate_user(db: Session, token: str, credentials_exception):
         raise credentials_exception
     return user
 
+# Function to create a new user
+def create_user(db: Session, username: str, password: str):
+    hashed_password = pwd_context.hash(password)
+    db_user = User(username=username, hashed_password=hashed_password)
+    db.add(db_user)
+    db.commit()
+    db.refresh(db_user)
+    return db_user
+
 # Endpoint to create a new user
 @app.post("/users/", response_model=UserResponse)
 def create_user_endpoint(username: str, password: str, db: Session = Depends(get_db)):
     user = create_user(db, username, password)
     return UserResponse(username=user.username, created_at=user.created_at)
-
-# Endpoint to create a new user
-@app.post("/users/", response_model=User)
-def create_user_endpoint(username: str, password: str, db: Session = Depends(get_db)):
-    return create_user(db, username, password)
 
 # Function to create a JWT token
 def create_jwt_token(data: dict, expires_delta: timedelta):
