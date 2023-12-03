@@ -36,6 +36,15 @@ def get_db():
     finally:
         db.close()
 
+# OAuth2PasswordBearer for authentication
+oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
+
+# OAuth2PasswordRequestForm for token retrieval
+oauth2_request_form = OAuth2PasswordRequestForm
+
+# CryptContext for password hashing
+pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
+
 # Dependency to get the current user
 def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_scheme)):
     credentials_exception = HTTPException(
@@ -45,14 +54,6 @@ def get_current_user(db: Session = Depends(get_db), token: str = Depends(oauth2_
     )
     return authenticate_user(db, token, credentials_exception)
 
-# OAuth2PasswordBearer for authentication
-oauth2_scheme = OAuth2PasswordBearer(tokenUrl="token")
-
-# OAuth2PasswordRequestForm for token retrieval
-oauth2_request_form = OAuth2PasswordRequestForm
-
-# CryptContext for password hashing
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
 # Function to verify a user's credentials
 def verify_token(db: Session, token: str):
