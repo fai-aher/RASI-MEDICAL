@@ -1,11 +1,8 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-def home(request):
-    return HttpResponse("Bienvenido a la vista de pacientes.")
-
 def index(request):
-    return render(request, 'index.html')
+    return render(request, 'index.html', context) #TODO add context is_authenticated, username
 
 def healthCheck(request):
     return HttpResponse('ok')
