@@ -117,5 +117,3 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
 @app.get("/health")
 def health():
     return {"status": "ok"}
-
-print("Auth service started")
