@@ -15,7 +15,7 @@ from rest_framework import status
 
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
+
 def patients_view(request):
     if request.method == 'GET':
         id_patient = request.GET.get('id', None)
@@ -44,7 +44,7 @@ def patients_view(request):
 
 
 # Get a patient by ID
-@csrf_exempt
+
 def patient_view(request, patient_pk):
     if request.method == 'GET':
         patient_dto = patients_logic.get_patient_by_id(patient_pk)
@@ -62,18 +62,16 @@ def patient_view(request, patient_pk):
             return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
-@csrf_exempt
+
 def patient_create(request):
     if request.method == 'POST':
         serializer = PatientSerializer(data=request.POST)
-        form = PatientForm(request.POST)
         if serializer.is_valid():
-            patients_logic.create_patient(form)
+            patients_logic.create_patient(serializer.validated_data)
             messages.add_message(request, messages.SUCCESS, 'Successfully created patient')
             return HttpResponseRedirect(reverse('patientCreate'))
         else:
-            print(serializer.errors)
-    
+            print(serializer.errors)    
     serializer = PatientSerializer()
     context = {
         'form': serializer.data,
