@@ -23,11 +23,15 @@ def patients_view(request):
         if id_patient:
             patient_dto = patients_logic.get_patient_by_id(id_patient)
             serializer = PatientSerializer(patient_dto)
-            return JsonResponse(serializer.data, safe=False)
+            patient = serializers.serialize('json', [patient_dto])
+            return HttpResponse(patient, content_type='application/json')
         else:
             patients = patients_logic.get_patients()
             serializer = PatientSerializer(patients, many=True)
-            return JsonResponse(serializer.data, safe=False)
+            context = {
+                'patients': serializer.data
+            }
+            return render(request, 'Patient/patients.html', context)
 
     if request.method == 'POST':
         serializer = PatientSerializer(data=request.data)
@@ -45,7 +49,8 @@ def patient_view(request, patient_pk):
     if request.method == 'GET':
         patient_dto = patients_logic.get_patient_by_id(patient_pk)
         serializer = PatientSerializer(patient_dto)
-        return JsonResponse(serializer.data, safe=False)
+        patient = serializers.serialize('json', [patient_dto])
+        return HttpResponse(patient, content_type='application/json')
     
     if request.method == 'PUT':
         data = JSONParser().parse(request)
