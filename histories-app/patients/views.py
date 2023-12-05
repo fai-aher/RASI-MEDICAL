@@ -24,7 +24,8 @@ def patients_view(request):
             patient_dto = patients_logic.get_patient_by_id(id_patient)
             serializer = PatientSerializer(patient_dto)
             patient = serializers.serialize('json', [patient_dto])
-            return HttpResponse(patient, content_type='application/json')
+            return render (request, 'Patient/patient.html', {'patient': patient})
+           
         else:
             patients = patients_logic.get_patients()
             serializer = PatientSerializer(patients, many=True)
