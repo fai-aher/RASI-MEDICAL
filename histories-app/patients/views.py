@@ -73,8 +73,8 @@ def patient_create(request):
         else:
             print(serializer.errors)
 
-    context = {
-        'form': serializer.data,
-    }
-    return render(request, 'Patient/patientCreate.html', context)
+        context = {
+            'form': serializer.data,
+        }
+        return render(request, 'Patient/patientCreate.html', context)
 
