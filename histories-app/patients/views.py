@@ -15,27 +15,26 @@ from rest_framework import status
 
 from django.views.decorators.csrf import csrf_exempt
 
-@csrf_exempt
-def patients_view(request):
-    if request.user.is_authenticated:
-        if request.method == 'GET':
-            id_patient = request.GET.get('id', None)
-            
-            if id_patient:
-                patient_dto = patients_logic.get_patient_by_id(id_patient)
-                serializer = PatientSerializer(patient_dto)
-                return JsonResponse(serializer.data, safe=False)
-            else:
-                patients = patients_logic.get_patients()
-                serializer = PatientSerializer(patients, many=True)
-                return JsonResponse(serializer.data, safe=False)
 
-        if request.method == 'POST':
-            serializer = PatientSerializer(data=request.data)
-            if serializer.is_valid():
-                patient_dto = patients_logic.create_patient(serializer.validated_data)
-                return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
-            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+def patients_view(request):
+    if request.method == 'GET':
+        id_patient = request.GET.get('id', None)
+            
+        if id_patient:
+            patient_dto = patients_logic.get_patient_by_id(id_patient)
+            serializer = PatientSerializer(patient_dto)
+            return JsonResponse(serializer.data, safe=False)
+        else:
+            patients = patients_logic.get_patients()
+            serializer = PatientSerializer(patients, many=True)
+            return JsonResponse(serializer.data, safe=False)
+
+    if request.method == 'POST':
+        serializer = PatientSerializer(data=request.data)
+        if serializer.is_valid():
+            patient_dto = patients_logic.create_patient(serializer.validated_data)
+            return JsonResponse(serializer.data, status=status.HTTP_201_CREATED)
+        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     else:
         return HttpResponse(status=401)
 
