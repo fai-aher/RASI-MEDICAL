@@ -2,7 +2,7 @@ import json
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework.parsers import JSONParser
 from django.http.response import JsonResponse
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core import serializers
@@ -57,5 +57,16 @@ def history_edit(request, history_pk):
         'patient_id': history.patient_id,
     }
     return render(request, 'Histories/historyUpdate.html', context)
+
+def history_create(request, patient_pk):
+    if request.method == 'POST':
+        serializer = HistorySerializer(data=request.POST)
+        if serializer.is_valid():
+            serializer.save(patient_id=patient_pk)
+            return redirect('history_detail', history_pk=serializer.instance.pk)
+    else:
+        serializer = HistorySerializer()
+
+    return render(request, 'Histories/historyCreate.html', {'form': serializer})
 
 
