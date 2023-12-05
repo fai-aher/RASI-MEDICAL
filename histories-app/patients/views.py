@@ -18,7 +18,7 @@ from django.views.decorators.csrf import csrf_exempt
 
 def patients_view(request):
     if request.method == 'GET':
-        id_patient = request.GET.get('id', None)
+        id_patient = request.GET.get('_id', None)
             
         if id_patient:
             patient_dto = patients_logic.get_patient_by_id(id_patient)
