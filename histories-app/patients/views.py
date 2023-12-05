@@ -57,8 +57,9 @@ def patient_view(request, patient_pk):
         serializer = PatientSerializer(data=data)
         if serializer.is_valid():
             patient_dto = patients_logic.update_patient(patient_pk, serializer.validated_data)
-            return JsonResponse(serializer.data, status=status.HTTP_200_OK)
-        return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            return HttpResponse(patient, content_type='application/json')
+        else:
+            return JsonResponse(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
     
     
 
