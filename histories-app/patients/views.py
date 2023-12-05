@@ -29,7 +29,7 @@ def patients_view(request):
             patients = patients_logic.get_patients()
             serializer = PatientSerializer(patients, many=True)
             context = {
-                'patients': serializer.data
+                'patient_list': serializer.data
             }
             return render(request, 'Patient/patients.html', context)
 
