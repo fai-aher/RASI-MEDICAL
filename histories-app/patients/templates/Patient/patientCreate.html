@@ -3,7 +3,31 @@
 <form method="POST">
     {% csrf_token %}
     <br>
-    {{ form.as_p }}
+    
+    <div class="form-group">
+        <label for="name">Name</label>
+        <input type="text" class="form-control" 
+        id="name" name="name" placeholder="Enter name" required>
+    </div>
+
+    <div class="form-group">
+        <label for="age">Age</label>
+        <input type="number" class="form-control" 
+        id="age" name="age" placeholder="Enter age" required>
+    </div>
+
+    <div class="form-group">
+        <label for="email">email</label>
+        <input type="email" class="form-control"
+        id="email" name="email" placeholder="Enter email" required> 
+    </div>
+
+    <div class="form-group">
+        <label for="address">address</label>
+        <input type="text" class="form-control"
+        id="address" name="address" placeholder="Enter address" required>
+    </div>
+
     <button type="submit" class="btn btn-success waves-effect waves-light">Create</button>
     <button type="button" class="btn btn-primary waves-effect waves-light"
                                 onClick=" window.location.href='/patients' ">Back
