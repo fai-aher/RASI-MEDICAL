@@ -72,11 +72,6 @@ def patient_create(request):
             return HttpResponseRedirect(reverse('patientCreate'))
         else:
             print(serializer.errors)
-
-        context = {
-            'form': serializer.data,
-        }
-        return render(request, 'Patient/patientCreate.html', context)
     
     serializer = PatientSerializer()
     context = {
