@@ -56,6 +56,6 @@ def history_edit(request, history_pk):
         'form': serializer.data,
         'patient_id': history.patient_id,
     }
-    return render(request, 'histories/historyUpdate.html', context)
+    return render(request, 'Histories/historyUpdate.html', context)
 
 
