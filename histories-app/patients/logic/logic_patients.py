@@ -28,5 +28,4 @@ def update_patient(patient_pk, new_patient):
 
 def create_patient(serializer):
     patient = serializer.save()
-    patient.save()
     return patient
