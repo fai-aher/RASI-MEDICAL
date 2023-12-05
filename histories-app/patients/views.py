@@ -65,15 +65,13 @@ def patient_view(request, patient_pk):
 
 def patient_create(request):
     if request.method == 'POST':
-        serializer = PatientSerializer(data=request.data)
+        serializer = PatientSerializer(data=request.POST)
         if serializer.is_valid():
             patients_logic.create_patient(serializer.validated_data)
             messages.add_message(request, messages.SUCCESS, 'Successfully created patient')
             return HttpResponseRedirect(reverse('patientCreate'))
         else:
             print(serializer.errors)
-    else:
-        serializer = PatientSerializer()
 
     context = {
         'form': serializer.data,
