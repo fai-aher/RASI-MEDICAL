@@ -40,10 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'histories',
     'patients',
-    'social_django',
+    'rest_framework',
+    'corsheaders',
 ]
 
+CORS_ORIGIN_ALLOW_ALL = True
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -81,14 +85,15 @@ WSGI_APPLICATION = 'rasi_medical.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'histories-db',
-        'USER': 'histories_user',
-        'PASSWORD': 'histories_password',
-        'HOST': '10.46.16.5',
-        'PORT': '5432',
+        'ENGINE': 'djongo',
+        'ENFORCE_SCHEMA': False,  # Puedes ajustar esto según tus necesidades
+        'CLIENT': {
+            'host': 'mongodb+srv://jsalguero:1234@clustersistrans.7bgqxpb.mongodb.net/',
+        },
+        'NAME': 'mongo-db-instance'
     }
 }
+
 
 # Password validation
 # https://docs.djangoproject.com/en/3.2/ref/settings/#auth-password-validators

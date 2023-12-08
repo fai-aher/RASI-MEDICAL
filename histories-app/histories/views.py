@@ -1,20 +1,31 @@
 import json
-from django.shortcuts import render
+from django.views.decorators.csrf import csrf_exempt
+from rest_framework.parsers import JSONParser
+from django.http.response import JsonResponse
+from django.shortcuts import redirect, render
 from django.http import HttpResponse, HttpResponseRedirect
 from django.urls import reverse
 from django.core import serializers
 from django.contrib import messages
 from .models import HistoryEdit
 from .forms import HistoryForm
+from histories.serializers import HistorySerializer, HistoryEditSerializer, PrescriptionSerializer, LabResultSerializer
+from patients.serializers import PatientSerializer
 from patients.logic.logic_patients import get_patient_by_id
 from histories.logic.logic_histories import get_history_by_patient_id, get_history_by_id, update_history
 
 # Create your views here.
 
 def patientHistories_view(request, patient_pk):
+    patient = get_patient_by_id(patient_pk)
+    history = get_history_by_patient_id(patient_pk)
+
+    patient_serializer = PatientSerializer(patient)
+    history_serializer = HistorySerializer(history)
+
     context = {
-        'patient': get_patient_by_id(patient_pk),
-        'history': get_history_by_patient_id(patient_pk),
+        'patient': patient_serializer.data,
+        'history': history_serializer.data,
     }
     return render(request, 'Histories/patientHistories.html', context)
 
@@ -22,34 +33,40 @@ def patientHistories_view(request, patient_pk):
 def history_edit(request, history_pk):
     history = get_history_by_id(history_pk)
     if request.method == 'POST':
-        form = HistoryForm(request.POST, instance=history)
-        if form.is_valid():
-            form.save()
-            # Creacion de una nueva instancia de HistoryEdit
-            HistoryEdit.objects.create(
-                history=history,
-                patient_id=history.patient_id,
-                state=history.state,
-                observations=history.observations,
-                date_of_birth=history.date_of_birth,
-                blood_type=history.blood_type,
-                allergies=history.allergies,
-                medications=history.medications,
-                past_diseases=history.past_diseases,
-                surgeries=history.surgeries,
-                family_history=history.family_history,
-            )
-            messages.add_message(request, messages.SUCCESS, 'Successfully updated history')
-            return HttpResponseRedirect(reverse('edit_history', args=[history_pk]))
+        serializer = HistorySerializer(history, data=request.POST)
+        if serializer.is_valid():
+            serializer.save()
+
+            # Create a new instance of HistoryEdit
+            history_edit_data = serializer.data
+            history_edit_data['history'] = history_pk
+            history_edit_serializer = HistoryEditSerializer(data=history_edit_data)
+            if history_edit_serializer.is_valid():
+                history_edit_serializer.save()
+                messages.add_message(request, messages.SUCCESS, 'Successfully updated history')
+                return HttpResponseRedirect(reverse('edit_history', args=[history_pk]))
+            else:
+                print(history_edit_serializer.errors)
         else:
-            print(form.errors)
+            print(serializer.errors)
     else:
-        form = HistoryForm(instance=history)
+        serializer = HistorySerializer(instance=history)
 
     context = {
-        'form': form,
+        'form': serializer.data,
         'patient_id': history.patient_id,
     }
     return render(request, 'Histories/historyUpdate.html', context)
+
+def history_create(request, patient_pk):
+    if request.method == 'POST':
+        serializer = HistorySerializer(data=request.POST)
+        if serializer.is_valid():
+            serializer.save(patient_id=patient_pk)
+            return redirect('history_detail', history_pk=serializer.instance.pk)
+    else:
+        serializer = HistorySerializer()
+
+    return render(request, 'Histories/historyCreate.html', {'form': serializer})
 
 

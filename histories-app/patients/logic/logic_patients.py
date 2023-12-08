@@ -26,7 +26,6 @@ def update_patient(patient_pk, new_patient):
     return patient
 
 
-def create_patient(form):
-    measurement = form.save()
-    measurement.save()
-    return ()
+def create_patient(serializer):
+    patient = serializer.save()
+    return patient
